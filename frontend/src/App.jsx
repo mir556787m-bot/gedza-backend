@@ -25,36 +25,65 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const loadMenu = async () => {
+    if (!userId) return;
+    const loadAll = async () => {
       try {
         setLoading(true);
-        const data = await fetchMenu();
-        setMenu(data);
+        const menuData = await fetchMenu();
+        console.log('[loadMenu] menu loaded:', menuData.length);
+        setMenu(menuData);
+
+        const cartData = await fetchCart(userId);
+        console.log('[loadCart] cartData:', cartData);
+
+        const items = buildCartItems(cartData, menuData);
+        console.log('[loadCart] items:', items);
+        setCartItems(items);
       } catch (err) {
-        setError("Не удалось загрузить меню.");
+        console.error(err);
+        setError("Не удалось загрузить данные.");
       } finally {
         setLoading(false);
       }
     };
-    if (userId) loadMenu();
+    loadAll();
   }, [userId]);
 
+  const buildCartItems = (cartData, menuData) => {
+    if (!cartData || typeof cartData !== 'object') return [];
+    if (Array.isArray(cartData.items)) return cartData.items;
+
+    return Object.entries(cartData)
+      .map(([itemId, qty]) => {
+        const menuItem = menuData.find((m) => m.id === itemId);
+        if (!menuItem) return null;
+        return { menu_item: menuItem, quantity: Number(qty) };
+      })
+      .filter(Boolean);
+  };
+
   const refreshCart = async () => {
+    console.log('[refreshCart] CALLED, userId=', userId, 'menu.length=', menu.length);
+    if (!menu.length) {
+      console.log('[refreshCart] menu пустое — выходим');
+      return;
+    }
     try {
-      const cart = await fetchCart(userId);
-      setCartItems(cart.items || []);
+      const cartData = await fetchCart(userId);
+      console.log('[refreshCart] cartData=', cartData);
+      const items = buildCartItems(cartData, menu);
+      console.log('[refreshCart] items=', items);
+      setCartItems(items);
     } catch (err) {
-      console.error("Ошибка загрузки корзины:", err);
+      console.error("[refreshCart] ошибка:", err);
     }
   };
 
-  useEffect(() => {
-    if (userId) refreshCart();
-  }, [userId]);
-
   const handleAddToCart = async (itemId) => {
+    console.log('[addToCart] itemId=', itemId);
     try {
-      await updateCart(userId, itemId, 1);
+      const res = await updateCart(userId, itemId, 1);
+      console.log('[addToCart] updateCart ответ:', res);
       await refreshCart();
     } catch (err) {
       console.error("Ошибка добавления:", err);
@@ -83,7 +112,11 @@ function App() {
   };
 
   const totalItems = cartItems.reduce((sum, i) => sum + i.quantity, 0);
-  const totalPrice = cartItems.reduce((sum, i) => sum + i.menu_item.price * i.quantity, 0);
+  const totalPrice = cartItems.reduce(
+    (sum, i) => sum + i.menu_item.price * i.quantity, 0
+  );
+
+  console.log('[RENDER] cartItems=', cartItems, 'totalItems=', totalItems);
 
   if (loading) return <div className="loader">Загрузка меню...</div>;
   if (error) return <div className="error">{error}</div>;
