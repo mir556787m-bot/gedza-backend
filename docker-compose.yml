@@ -1,0 +1,28 @@
+services:
+  redis:
+    image: redis:7-alpine
+    container_name: gedza-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+
+  backend:
+    build: .
+    container_name: gedza-backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+      - MENU_CACHE_TTL=3600
+      - PARSE_INTERVAL_MINUTES=60
+      - GEDZA_URL=https://gedzagroup.ru/
+      - WATBOT_WEBHOOK_URL=${WATBOT_WEBHOOK_URL:-}
+    depends_on:
+      - redis
+
+volumes:
+  redis_data:

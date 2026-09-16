@@ -1,0 +1,16 @@
+venv/
+__pycache__/
+*.pyc
+.env
+.git/
+.gitignore
+.vscode/
+.idea/
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+debug_*.py
+debug_*.html
+test_parser.py
+.DS_Store
+Thumbs.db
