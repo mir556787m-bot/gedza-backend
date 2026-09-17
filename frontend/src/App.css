@@ -5,7 +5,12 @@
   padding: 0;
 }
 
-/* ===== Общий контейнер ===== */
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: #000;
+  color: #fff;
+}
+
 .app {
   position: relative;
   width: 100%;
@@ -13,7 +18,7 @@
   overflow: hidden;
 }
 
-/* ===== Заголовок (поверх всего) ===== */
+/* ===== Заголовок ===== */
 .header {
   position: absolute;
   top: 0;
@@ -24,7 +29,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: rgba(0, 0, 0, 0.85);
+  background: rgba(0, 0, 0, 0.9);
   backdrop-filter: blur(10px);
   z-index: 100;
 }
@@ -38,59 +43,101 @@
   opacity: 0.5;
 }
 
-/* ===== Лента-скроллинг ===== */
+/* ===== Панель категорий ===== */
+.categories {
+  position: absolute;
+  top: 60px;
+  left: 0;
+  right: 0;
+  display: flex;
+  overflow-x: auto;
+  gap: 8px;
+  padding: 12px 16px;
+  background: rgba(0, 0, 0, 0.9);
+  backdrop-filter: blur(10px);
+  z-index: 99;
+  scrollbar-width: none;
+}
+.categories::-webkit-scrollbar {
+  display: none;
+}
+
+.category-btn {
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: transparent;
+  color: #fff;
+  font-size: 14px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.category-btn.active {
+  background: #ff4757;
+  border-color: #ff4757;
+}
+
+/* ===== Лента ===== */
 .feed {
   width: 100%;
   height: 100vh;
   overflow-y: scroll;
   scroll-snap-type: y mandatory;
-  padding-top: 60px;
-  box-sizing: border-box;
+  padding-top: 120px; /* хедер + категории */
 }
 
 .feed::-webkit-scrollbar {
   display: none;
 }
 
-/* ===== Карточка (ровно один экран) ===== */
+/* ===== Карточка ===== */
 .card {
   position: relative;
   width: 100%;
-  height: calc(100vh - 60px);
   scroll-snap-align: start;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
+  background: #000;
+  margin-bottom: 16px;
 }
 
 .card-image {
-  position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
-  height: 100%;
+  aspect-ratio: 1 / 1;
   object-fit: cover;
-  z-index: 0;
-  opacity: 0.75;
+  display: block;
 }
 
 .card-content {
   position: relative;
   z-index: 2;
-  padding: 24px 20px;
-  background: linear-gradient(to top,
+  padding: 20px;
+  background: linear-gradient(
+    to top,
     rgba(0, 0, 0, 1) 0%,
     rgba(0, 0, 0, 0.85) 40%,
     rgba(0, 0, 0, 0.4) 75%,
-    transparent 100%);
+    transparent 100%
+  );
+  margin-top: -80px;
 }
 
 .card-title {
   font-size: 22px;
   font-weight: bold;
-  margin-bottom: 8px;
+  margin-bottom: 4px;
   line-height: 1.2;
+}
+
+.card-weight {
+  font-size: 12px;
+  opacity: 0.6;
+  display: block;
+  margin-bottom: 8px;
 }
 
 .card-desc {
@@ -108,6 +155,18 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.price-block {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.old-price {
+  font-size: 14px;
+  text-decoration: line-through;
+  opacity: 0.5;
 }
 
 .card-price {
@@ -135,8 +194,9 @@
   transform: scale(0.9);
 }
 
-/* ===== Состояния загрузки ===== */
-.loader, .error {
+/* ===== Состояния ===== */
+.loader,
+.error {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -225,7 +285,9 @@
   margin-bottom: 15px;
 }
 
-.cart-header h2 { font-size: 20px; }
+.cart-header h2 {
+  font-size: 20px;
+}
 
 .close-btn {
   background: transparent;

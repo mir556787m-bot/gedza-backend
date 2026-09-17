@@ -11,37 +11,43 @@ function App() {
   const [userId, setUserId] = useState(null);
   const [cartItems, setCartItems] = useState([]);
   const [cartOpen, setCartOpen] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState('all');
 
+  // === Инициализация пользователя через MAX Bridge ===
   useEffect(() => {
     const initUser = () => {
-      if (window.MAXBridge) {
-        window.MAXBridge.ready();
-        const user = window.MAXBridge.initDataUnsafe?.user;
-        if (user) { setUserId(user.id); return; }
+      if (window.WebApp) {
+        window.WebApp.ready();
+        const user = window.WebApp.initDataUnsafe?.user;
+        if (user) {
+          console.log('[MAX] Пользователь:', user.first_name, 'ID:', user.id);
+          setUserId(user.id);
+          return;
+        }
       }
+      // Фолбэк для тестирования в браузере
+      console.warn('[MAX] Bridge не найден, использую тестовый ID');
       setUserId(12345);
     };
     initUser();
   }, []);
 
+  // === Загрузка меню и корзины ===
   useEffect(() => {
     if (!userId) return;
+
     const loadAll = async () => {
       try {
         setLoading(true);
         const menuData = await fetchMenu();
-        console.log('[loadMenu] menu loaded:', menuData.length);
         setMenu(menuData);
 
         const cartData = await fetchCart(userId);
-        console.log('[loadCart] cartData:', cartData);
-
         const items = buildCartItems(cartData, menuData);
-        console.log('[loadCart] items:', items);
         setCartItems(items);
       } catch (err) {
         console.error(err);
-        setError("Не удалось загрузить данные.");
+        setError('Не удалось загрузить данные.');
       } finally {
         setLoading(false);
       }
@@ -49,6 +55,7 @@ function App() {
     loadAll();
   }, [userId]);
 
+  // === Сборка корзины: {item_id: qty} + menu → [{menu_item, quantity}] ===
   const buildCartItems = (cartData, menuData) => {
     if (!cartData || typeof cartData !== 'object') return [];
     if (Array.isArray(cartData.items)) return cartData.items;
@@ -63,30 +70,23 @@ function App() {
   };
 
   const refreshCart = async () => {
-    console.log('[refreshCart] CALLED, userId=', userId, 'menu.length=', menu.length);
-    if (!menu.length) {
-      console.log('[refreshCart] menu пустое — выходим');
-      return;
-    }
+    if (!menu.length) return;
     try {
       const cartData = await fetchCart(userId);
-      console.log('[refreshCart] cartData=', cartData);
       const items = buildCartItems(cartData, menu);
-      console.log('[refreshCart] items=', items);
       setCartItems(items);
     } catch (err) {
-      console.error("[refreshCart] ошибка:", err);
+      console.error('Ошибка корзины:', err);
     }
   };
 
+  // === Обработчики ===
   const handleAddToCart = async (itemId) => {
-    console.log('[addToCart] itemId=', itemId);
     try {
-      const res = await updateCart(userId, itemId, 1);
-      console.log('[addToCart] updateCart ответ:', res);
+      await updateCart(userId, itemId, 1);
       await refreshCart();
     } catch (err) {
-      console.error("Ошибка добавления:", err);
+      console.error('Ошибка добавления:', err);
     }
   };
 
@@ -95,7 +95,7 @@ function App() {
       await updateCart(userId, itemId, delta);
       await refreshCart();
     } catch (err) {
-      console.error("Ошибка изменения количества:", err);
+      console.error('Ошибка изменения количества:', err);
     }
   };
 
@@ -106,17 +106,22 @@ function App() {
       setCartOpen(false);
       await refreshCart();
     } catch (err) {
-      console.error("Ошибка заказа:", err);
-      alert("Не удалось оформить заказ. Попробуйте еще раз.");
+      console.error('Ошибка заказа:', err);
+      alert('Не удалось оформить заказ. Попробуйте еще раз.');
     }
   };
 
+  // === Категории ===
+  const categories = ['all', ...new Set(menu.map((item) => item.category).filter(Boolean))];
+  const filteredMenu =
+    selectedCategory === 'all' ? menu : menu.filter((item) => item.category === selectedCategory);
+
+  // === Подсчёты ===
   const totalItems = cartItems.reduce((sum, i) => sum + i.quantity, 0);
   const totalPrice = cartItems.reduce(
-    (sum, i) => sum + i.menu_item.price * i.quantity, 0
+    (sum, i) => sum + i.menu_item.price * i.quantity,
+    0
   );
-
-  console.log('[RENDER] cartItems=', cartItems, 'totalItems=', totalItems);
 
   if (loading) return <div className="loader">Загрузка меню...</div>;
   if (error) return <div className="error">{error}</div>;
@@ -128,16 +133,35 @@ function App() {
         <span className="user-id">ID: {userId}</span>
       </header>
 
+      {/* Панель категорий */}
+      <div className="categories">
+        {categories.map((cat) => (
+          <button
+            key={cat}
+            className={`category-btn ${selectedCategory === cat ? 'active' : ''}`}
+            onClick={() => setSelectedCategory(cat)}
+          >
+            {cat === 'all' ? 'Все' : cat}
+          </button>
+        ))}
+      </div>
+
       <div className="feed">
-        {menu.map((item) => (
+        {filteredMenu.map((item) => (
           <div key={item.id} className="card">
             <img src={item.image} alt={item.name} className="card-image" />
             <div className="card-content">
               <h2 className="card-title">{item.name}</h2>
+              {item.weight && <span className="card-weight">{item.weight}</span>}
               {item.description && <p className="card-desc">{item.description}</p>}
               <div className="card-footer">
-                <span className="card-price">{item.price} ₽</span>
-                <button className="add-btn" onClick={() => handleAddToCart(item.id)}>+</button>
+                <div className="price-block">
+                  {item.old_price && <span className="old-price">{item.old_price} ₽</span>}
+                  <span className="card-price">{item.price} ₽</span>
+                </div>
+                <button className="add-btn" onClick={() => handleAddToCart(item.id)}>
+                  +
+                </button>
               </div>
             </div>
           </div>

@@ -1,13 +1,32 @@
 services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: gedza-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: gedza
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-gedza_secret}
+      POSTGRES_DB: gedza
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U gedza"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
   redis:
     image: redis:7-alpine
     container_name: gedza-redis
     restart: unless-stopped
-    ports:
-      - "6379:6379"
     volumes:
       - redis_data:/data
     command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
 
   backend:
     build: .
@@ -17,12 +36,20 @@ services:
       - "8000:8000"
     environment:
       - REDIS_URL=redis://redis:6379/0
+      - POSTGRES_URL=postgresql://gedza:${POSTGRES_PASSWORD:-gedza_secret}@postgres:5432/gedza
       - MENU_CACHE_TTL=3600
       - PARSE_INTERVAL_MINUTES=60
       - GEDZA_URL=https://gedzagroup.ru/
-      - WATBOT_WEBHOOK_URL=${WATBOT_WEBHOOK_URL:-}
+      - MAX_BOT_TOKEN=${MAX_BOT_TOKEN}
+      - MINI_APP_URL=${MINI_APP_URL}
+      - MAX_WEBHOOK_SECRET=${MAX_WEBHOOK_SECRET}
+      - ADMIN_SECRET=${ADMIN_SECRET}
     depends_on:
-      - redis
+      redis:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
 
 volumes:
   redis_data:
+  postgres_data:
