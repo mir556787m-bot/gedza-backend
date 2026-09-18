@@ -13,7 +13,6 @@ GEDZA_URL = os.getenv("GEDZA_URL", "https://gedzagroup.ru/")
 
 def _slugify(text: str) -> str:
     """Преобразует название в стабильный slug-id."""
-    import re
     text = text.lower().strip()
     text = re.sub(r"[^a-zа-я0-9]+", "_", text)
     return text.strip("_")[:50]
@@ -22,7 +21,6 @@ def _slugify(text: str) -> str:
 async def parse_gedza_menu() -> List[Dict]:
     """
     Парсит меню с сайта Гедзы.
-
     Извлекает: id, name, price, old_price, weight, category, badge, description, image.
     """
     async with async_playwright() as p:
@@ -46,116 +44,79 @@ async def parse_gedza_menu() -> List[Dict]:
             await page.goto(GEDZA_URL, wait_until="networkidle", timeout=60000)
             await page.wait_for_timeout(4000)
 
-            # Прокручиваем страницу вниз, чтобы подгрузились все карточки
-            for _ in range(8):
+            # Прокручиваем страницу — подгружаем все карточки
+            for _ in range(15):
                 await page.mouse.wheel(0, 3000)
                 await page.wait_for_timeout(500)
-            await page.wait_for_timeout(2000)
+            await page.wait_for_timeout(3000)
 
             items = await page.evaluate("""() => {
                 const items = [];
                 const seen = new Set();
 
-                // Пытаемся найти все карточки товаров
-                // Ищем по разным селекторам: ProductCard, Card, [class*="product"]
-                const cards = document.querySelectorAll(
-                    '[class*="ProductCard"], [class*="product-card"], [class*="Product"]'
-                );
-
-                cards.forEach((el, idx) => {
-                    // Ищем картинку с названием в title
-                    const img = el.querySelector('img[title]') || el.querySelector('img');
+                // Обработка одной карточки
+                const processCard = (el, category) => {
+                    const img = el.querySelector('img[title]');
                     if (!img) return;
+                    const name = (img.getAttribute('title') || '').trim();
+                    if (!name || name.length < 3 || seen.has(name)) return;
 
-                    const name = img.getAttribute('title') || img.getAttribute('alt') || '';
-                    if (!name || name.length < 3) return;
-                    if (seen.has(name)) return;
+                    const imageSrc = img.getAttribute('src') || '';
 
-                    const imgSrc = img.getAttribute('src') || '';
+                    // Вес — <p> с текстом "NNN г"
+                    let weight = '';
+                    el.querySelectorAll('p').forEach(p => {
+                        const t = (p.innerText || '').trim();
+                        if (/^\\d+\\s*г(р)?$/.test(t)) weight = t;
+                    });
 
-                    // Весь текст карточки
-                    const allText = (el.innerText || '').trim();
+                    // Старая цена — элемент с классом line-through
+                    let oldPrice = 0;
+                    const oldEl = el.querySelector('[class*="line-through"]');
+                    if (oldEl) {
+                        const m = (oldEl.innerText || '').match(/(\\d[\\d\\s]*)/);
+                        if (m) oldPrice = parseInt(m[1].replace(/\\s/g, ''));
+                    }
 
-                    // ─── Цены ───
-                    // Все найденные "числа + ₽"
-                    const priceMatches = [...allText.matchAll(/(\\d[\\d\\s]*)\\s*₽/g)]
-                        .map(m => parseInt(m[1].replace(/\\s/g, '')))
-                        .filter(n => n > 0);
+                    // Цены — все <p> с "₽"
+                    const prices = [];
+                    el.querySelectorAll('p').forEach(p => {
+                        const t = (p.innerText || '').trim();
+                        const m = t.match(/^(\\d[\\d\\s]*)\\s*₽/);
+                        if (m) prices.push(parseInt(m[1].replace(/\\s/g, '')));
+                    });
 
                     let price = 0;
-                    let oldPrice = 0;
-
-                    // Ищем элемент с line-through для старой цены
-                    const oldPriceEl = el.querySelector(
-                        '[style*="line-through"], .old-price, [class*="old"], s, del'
-                    );
-                    if (oldPriceEl) {
-                        const oldText = (oldPriceEl.innerText || '').replace(/[^\\d]/g, '');
-                        if (oldText) oldPrice = parseInt(oldText);
+                    if (prices.length === 1) {
+                        price = prices[0];
+                    } else if (prices.length >= 2) {
+                        price = Math.min(...prices);
+                        if (!oldPrice) oldPrice = Math.max(...prices);
                     }
 
-                    if (priceMatches.length === 1) {
-                        price = priceMatches[0];
-                    } else if (priceMatches.length >= 2) {
-                        // Обычно [старая, новая] или [новая, старая]
-                        price = Math.min(...priceMatches);
-                        oldPrice = Math.max(...priceMatches);
-                    }
+                    // Если old_price === price — сбрасываем старую цену
+                    if (oldPrice && oldPrice <= price) oldPrice = 0;
 
-                    // ─── Вес ───
-                    let weight = '';
-                    const weightMatch = allText.match(/(\\d+)\\s*г(?:р)?\\b/i);
-                    if (weightMatch) weight = weightMatch[1] + ' г';
-
-                    // ─── Бейдж ───
+                    // Бейдж — img с data-tooltip-content
                     let badge = '';
-                    const upper = allText.toUpperCase();
-                    if (upper.includes('НОВИНКА')) badge = 'НОВИНКА';
-                    else if (upper.includes('ХИТ')) badge = 'ХИТ';
-                    else if (upper.includes('ОСТРО') || upper.includes('🌶')) badge = 'ОСТРО';
+                    const badgeImg = el.querySelector('img[data-tooltip-content]');
+                    if (badgeImg) {
+                        badge = (badgeImg.getAttribute('data-tooltip-content') || '').toUpperCase();
+                    }
 
-                    // ─── Описание ───
+                    // Описание — длинный <p> без цены/веса
                     let description = '';
-                    const descEl = el.querySelector(
-                        '[class*="description"], [class*="Description"], span.block'
-                    );
-                    if (descEl) {
-                        description = descEl.innerText.trim();
-                    } else {
-                        // Иначе — из всего текста берём первые 200 символов после названия
-                        const cleanText = allText
-                            .replace(priceMatch => priceMatch, '')
-                            .split('\\n')
-                            .map(s => s.trim())
-                            .filter(s => s.length > 10 && !s.includes('₽') && !s.includes('г'))
-                            .join(' ');
-                        description = cleanText.substring(0, 200);
-                    }
-
-                    // ─── Категория ───
-                    // Ищем ближайший заголовок раздела или data-атрибут
-                    let category = '';
-                    const catAttr = el.getAttribute('data-category')
-                        || el.closest('[data-category]')?.getAttribute('data-category');
-                    if (catAttr) {
-                        category = catAttr;
-                    } else {
-                        // Ищем заголовок выше в DOM
-                        let parent = el.parentElement;
-                        for (let i = 0; i < 6 && parent; i++) {
-                            const h = parent.querySelector('h1, h2, h3');
-                            if (h && h.innerText.trim().length < 60) {
-                                category = h.innerText.trim();
-                                break;
-                            }
-                            parent = parent.parentElement;
+                    el.querySelectorAll('p').forEach(p => {
+                        const t = (p.innerText || '').trim();
+                        if (t.length > 40 && !t.includes('₽') && !/^\\d+\\s*г/.test(t)) {
+                            description = t;
                         }
-                    }
+                    });
 
                     if (name && price > 0) {
                         seen.add(name);
                         items.push({
-                            id: 'gedza_' + idx,
+                            id: 'tmp_' + items.length,
                             name: name,
                             description: description,
                             price: price,
@@ -163,10 +124,30 @@ async def parse_gedza_menu() -> List[Dict]:
                             weight: weight || null,
                             category: category || null,
                             badge: badge || null,
-                            image: imgSrc,
+                            image: imageSrc,
                         });
                     }
+                };
+
+                // 1. Идём по всем секциям (section-XX) и берём заголовок как категорию
+                const sections = document.querySelectorAll('[class*="section-"]');
+                sections.forEach(section => {
+                    let category = '';
+                    const h = section.querySelector('h1, h2, h3');
+                    if (h) {
+                        category = (h.innerText || '').trim().slice(0, 50);
+                    }
+
+                    // Карточки внутри секции
+                    const cards = section.querySelectorAll('[class*="shadow-productCart"]');
+                    cards.forEach(card => processCard(card, category));
                 });
+
+                // 2. Fallback: если категорий нет — берём все карточки без категории
+                if (items.length === 0) {
+                    const allCards = document.querySelectorAll('[class*="shadow-productCart"]');
+                    allCards.forEach(card => processCard(card, 'Меню'));
+                }
 
                 return items;
             }""")
