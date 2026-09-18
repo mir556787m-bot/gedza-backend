@@ -13,7 +13,6 @@ html, body, #root {
   -webkit-tap-highlight-color: transparent;
 }
 
-/* Убираем все стандартные отступы Vite */
 body {
   display: block;
   place-items: unset;
