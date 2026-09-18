@@ -25,8 +25,7 @@ function App() {
           return;
         }
       }
-      // Фолбэк для тестирования в браузере
-      console.warn('[MAX] Bridge не найден, использую тестовый ID');
+      console.warn('[MAX] Bridge не найден, тестовый ID');
       setUserId(12345);
     };
     initUser();
@@ -55,7 +54,6 @@ function App() {
     loadAll();
   }, [userId]);
 
-  // === Сборка корзины: {item_id: qty} + menu → [{menu_item, quantity}] ===
   const buildCartItems = (cartData, menuData) => {
     if (!cartData || typeof cartData !== 'object') return [];
     if (Array.isArray(cartData.items)) return cartData.items;
@@ -80,7 +78,6 @@ function App() {
     }
   };
 
-  // === Обработчики ===
   const handleAddToCart = async (itemId) => {
     try {
       await updateCart(userId, itemId, 1);
@@ -150,6 +147,14 @@ function App() {
         {filteredMenu.map((item) => (
           <div key={item.id} className="card">
             <img src={item.image} alt={item.name} className="card-image" />
+
+            {/* Бейдж */}
+            {item.badge && (
+              <span className={`card-badge card-badge-${item.badge.toLowerCase()}`}>
+                {item.badge}
+              </span>
+            )}
+
             <div className="card-content">
               <h2 className="card-title">{item.name}</h2>
               {item.weight && <span className="card-weight">{item.weight}</span>}
