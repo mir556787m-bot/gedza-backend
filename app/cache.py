@@ -2,7 +2,7 @@
 import json
 import os
 import logging
-from typing import Optional
+from typing import Optional, Set
 from datetime import datetime
 
 import redis.asyncio as redis
@@ -102,6 +102,35 @@ async def release_parse_lock():
         await r.delete("menu:parse_lock")
     except Exception as e:
         logger.error(f"Redis unlock error: {e}")
+
+
+# ─── Стоп-лист ───
+
+async def set_stop_list_cache(stop_ids: Set[str], ttl: int = 600) -> bool:
+    """
+    Сохраняет множество ID блюд, которых нет в наличии (стоп-лист).
+    """
+    try:
+        r = await get_redis()
+        key = "menu:stop_list"
+        await r.delete(key)
+        if stop_ids:
+            await r.sadd(key, *stop_ids)
+            await r.expire(key, ttl)
+        return True
+    except Exception as e:
+        logger.error(f"Redis stop_list write error: {e}")
+        return False
+
+
+async def get_stop_list_cache() -> Set[str]:
+    """Возвращает множество ID блюд в стоп-листе."""
+    try:
+        r = await get_redis()
+        return set(await r.smembers("menu:stop_list"))
+    except Exception as e:
+        logger.error(f"Redis stop_list read error: {e}")
+        return set()
 
 
 # ─── Корзина ───

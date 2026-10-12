@@ -1,0 +1,191 @@
+/* frontend/src/components/ProductModal.css */
+
+.react-modal-sheet-container {
+  border-top-left-radius: 24px !important;
+  border-top-right-radius: 24px !important;
+  position: relative;
+}
+
+/* Прозрачная ручка сверху */
+.react-modal-sheet-header {
+  background: transparent !important;
+  box-shadow: none !important;
+  min-height: 8px !important;
+  height: 8px !important;
+}
+
+/* Убираем полоску-бегунок */
+.react-modal-sheet-drag-indicator {
+  display: none !important;
+}
+
+/* ─── Скролл ─── */
+.pm-scroll {
+  padding: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
+  scrollbar-width: none;
+}
+
+.pm-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.pm-sheet {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ─── Фото — квадрат ─── */
+.pm-image-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  max-height: 280px;
+  overflow: hidden;
+  background: #fafafa;
+  border-top-left-radius: 24px;
+  border-top-right-radius: 24px;
+  flex-shrink: 0;
+}
+
+.pm-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.pm-badge {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: #fff;
+  background: #d40000;
+}
+
+.pm-badge.badge-новинка,
+.pm-badge.badge-новое { background: #ffa502; }
+.pm-badge.badge-хит { background: #d40000; }
+.pm-badge.badge-остро,
+.pm-badge.badge-острое { background: #e74c3c; }
+
+.pm-body {
+  padding: 20px 20px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pm-title {
+  font-size: 20px;
+  font-weight: 800;
+  color: #1a1a1a;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.pm-weight {
+  font-size: 13px;
+  color: #999;
+}
+
+.pm-desc {
+  font-size: 14px;
+  color: #444;
+  line-height: 1.5;
+  margin-top: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pm-desc p { margin: 0; }
+
+.pm-bottom {
+  padding: 12px 20px calc(20px + env(safe-area-inset-bottom, 0px));
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  background: #ffffff;
+  flex-shrink: 0;
+}
+
+.pm-actions {
+  display: flex;
+  gap: 8px;
+  align-items: stretch;
+}
+
+.pm-add-btn {
+  flex: 1;
+  padding: 16px;
+  background: #d40000;
+  color: #fff;
+  border: none;
+  border-radius: 28px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.pm-add-btn:active { transform: scale(0.98); }
+
+.pm-qty-control {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #d40000;
+  border-radius: 28px;
+  padding: 4px;
+  min-height: 52px;
+}
+
+.pm-qty-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: #ffffff;
+  font-size: 22px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.pm-qty-btn:active { background: rgba(255, 255, 255, 0.2); }
+
+.pm-qty-info {
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 700;
+  padding: 0 8px;
+}
+
+.pm-cart-btn {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: none;
+  background: #ffffff;
+  color: #d40000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  flex-shrink: 0;
+}
+
+.pm-cart-btn:active { transform: scale(0.92); }

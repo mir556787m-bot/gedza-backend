@@ -1,0 +1,24 @@
+/* frontend/src/components/WheelBanner.css */
+.wheel-banner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  margin: 12px 12px 0;
+  background: #ffd700;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+.wheel-banner:active { transform: scale(0.98); }
+.wheel-banner-icon { font-size: 24px; }
+.wheel-banner-text {
+  flex: 1;
+  font-size: 15px;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+.wheel-banner-arrow {
+  font-size: 24px;
+  color: #1a1a1a;
+}

@@ -1,0 +1,68 @@
+/* frontend/src/components/PrivacyPolicy.css */
+
+/* Закругление углов — под Mini App */
+.react-modal-sheet-container {
+  border-top-left-radius: 24px !important;
+  border-top-right-radius: 24px !important;
+}
+
+.pp-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  padding: 12px 20px calc(20px + env(safe-area-inset-bottom, 0px));
+}
+
+.pp-sheet {
+  position: relative;
+  padding-top: 48px;
+}
+
+.pp-title {
+  font-size: 20px;
+  font-weight: 800;
+  color: #1a1a1a;
+  margin: 8px 0 12px;
+  padding-right: 48px;
+  line-height: 1.25;
+}
+
+.pp-intro {
+  font-size: 14px;
+  color: #444;
+  line-height: 1.5;
+  margin: 0 0 16px;
+}
+
+.pp-section {
+  margin-bottom: 18px;
+}
+
+.pp-section-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 8px;
+  line-height: 1.3;
+}
+
+.pp-text {
+  font-size: 14px;
+  color: #444;
+  line-height: 1.5;
+  margin: 0 0 8px;
+}
+
+.pp-list {
+  margin: 0 0 8px;
+  padding-left: 20px;
+}
+
+.pp-list li {
+  font-size: 14px;
+  color: #444;
+  line-height: 1.5;
+  margin-bottom: 4px;
+}

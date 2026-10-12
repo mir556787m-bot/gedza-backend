@@ -1,0 +1,435 @@
+/* frontend/src/components/LocationSheet.css */
+
+/* Закругление углов — под Mini App */
+.react-modal-sheet-container {
+  border-top-left-radius: 24px !important;
+  border-top-right-radius: 24px !important;
+}
+
+/* ─── Скролл-контейнер, который рендерит Sheet.Content ─── */
+.ls-scroll {
+  padding: 12px 20px calc(20px + env(safe-area-inset-bottom, 0px));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  min-height: 100%;
+  touch-action: pan-y;
+}
+
+.ls-sheet {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+}
+
+/* ─── Табы ─── */
+.ls-tabs {
+  position: relative;
+  display: flex;
+  gap: 0;
+  padding: 4px;
+  background: #f0f0f2;
+  border-radius: 50px;
+  margin-top: 4px;
+  flex-shrink: 0;
+}
+
+.ls-tabs-slider {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 4px;
+  width: calc(50% - 4px);
+  background: #d40000;
+  border-radius: 50px;
+  transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.ls-tabs-slider.right {
+  transform: translateX(100%);
+}
+
+.ls-tab {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 8px;
+  border: none;
+  background: transparent;
+  border-radius: 50px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #666;
+  cursor: pointer;
+  transition: color 0.28s ease;
+}
+
+.ls-tab.active {
+  color: #ffffff;
+}
+
+.ls-tab svg {
+  flex-shrink: 0;
+  pointer-events: none;
+}
+
+/* ─── Список ─── */
+.ls-body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ls-body-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  flex-shrink: 0;
+}
+
+.ls-add-address {
+  border: none;
+  background: transparent;
+  color: #d40000;
+  font-size: 15px;
+  font-weight: 400;
+  cursor: pointer;
+  padding: 4px 0;
+  font-family: inherit;
+}
+
+/* ─── Заголовки — крупные, как «Заполните детали» ─── */
+.ls-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1a1a1a;
+  line-height: 1.25;
+  margin: 0;
+}
+
+.ls-empty {
+  text-align: center;
+  color: #999;
+  padding: 16px;
+  font-size: 14px;
+}
+
+.ls-loading {
+  text-align: center;
+  color: #999;
+  padding: 24px;
+}
+
+/* ─── Строка выбора адреса/ресторана ─── */
+.ls-radio-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 12px;
+  border-radius: 12px;
+  background: #ffffff;
+  border: 1.5px solid #f0f0f2;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  flex-shrink: 0;
+}
+
+.ls-radio-row.active {
+  border-color: #d40000;
+  background: #fff5f5;
+}
+
+.ls-radio-dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid #d0d0d0;
+  flex-shrink: 0;
+  position: relative;
+  transition: border-color 0.15s;
+  pointer-events: none;
+}
+
+.ls-radio-row.active .ls-radio-dot {
+  border-color: #d40000;
+}
+
+.ls-radio-row.active .ls-radio-dot::after {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  background: #d40000;
+}
+
+.ls-radio-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  flex: 1;
+  pointer-events: none;
+}
+
+.ls-radio-name {
+  font-size: 15px;
+  font-weight: 400;
+  color: #1a1a1a;
+  line-height: 1.3;
+}
+
+.ls-radio-details {
+  font-size: 12px;
+  color: #999;
+  line-height: 1.3;
+}
+
+.ls-addr-del {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: #999;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  padding: 0;
+  transition: background 0.15s, color 0.15s;
+}
+
+.ls-addr-del:active {
+  background: #f0f0f2;
+  color: #d40000;
+}
+
+.ls-addr-del svg {
+  pointer-events: none;
+}
+
+/* ─── Поля ввода ─── */
+.ls-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  flex-shrink: 0;
+}
+
+.ls-input {
+  padding: 14px;
+  background: #f7f7f9;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  font-size: 15px;
+  font-family: inherit;
+  outline: none;
+  color: #1a1a1a;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.ls-input:focus {
+  border-color: #d40000;
+  background: #ffffff;
+}
+
+.ls-input-with-clear {
+  padding-right: 42px;
+}
+
+.ls-input-error {
+  border-color: #d40000;
+}
+
+.ls-hint {
+  font-size: 12px;
+  color: #d40000;
+  margin-top: -4px;
+  padding-left: 4px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ls-clear-btn {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: none;
+    background: #d0d0d0;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    padding: 0;
+  }
+  .ls-clear-btn:active {
+    background: #b0b0b0;
+  }
+}
+
+@media (hover: none) {
+  .ls-clear-btn {
+    display: none !important;
+  }
+}
+
+.ls-input-readonly {
+  background: #f7f7f9;
+  color: #1a1a1a;
+  cursor: pointer;
+  margin-top: 8px;
+  flex-shrink: 0;
+}
+
+.ls-input-readonly::placeholder {
+  color: #999;
+}
+
+/* ─── Кнопка продолжения ─── */
+.ls-submit {
+  width: 100%;
+  padding: 16px;
+  background: #d40000;
+  color: #ffffff;
+  border: none;
+  border-radius: 50px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 8px;
+  flex-shrink: 0;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.ls-submit:disabled {
+  background: #e0e0e2;
+  color: #999;
+  cursor: not-allowed;
+}
+
+.ls-submit:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+/* ─── Новый адрес ─── */
+.ls-newaddr-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+  flex-shrink: 0;
+}
+
+.ls-newaddr-header .ls-title {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.ls-back {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background: #f0f0f2;
+  color: #1a1a1a;
+  font-size: 24px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* ─── Детали ресторана ─── */
+.ls-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-top: 8px;
+}
+
+.ls-detail-address {
+  font-size: 14px;
+  color: #999;
+  line-height: 1.4;
+  margin: 0 0 16px;
+}
+
+.ls-detail-schedule {
+  font-size: 14px;
+  color: #999;
+  margin: 0 0 4px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.ls-detail-phone {
+  display: block;
+  font-size: 16px;
+  color: #1a1a1a;
+  text-decoration: none;
+  margin: 8px 0 0;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.ls-detail-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+  padding-top: 24px;
+}
+
+.ls-btn-cancel {
+  flex: 1;
+  padding: 16px;
+  background: #ffffff;
+  color: #d40000;
+  border: 1.5px solid #d40000;
+  border-radius: 50px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.ls-btn-continue {
+  flex: 1;
+  padding: 16px;
+  background: #d40000;
+  color: #ffffff;
+  border: none;
+  border-radius: 50px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.ls-btn-continue:disabled {
+  background: #e0e0e2;
+  color: #999;
+  cursor: not-allowed;
+}
+
+.ls-btn-cancel:active,
+.ls-btn-continue:active:not(:disabled) {
+  transform: scale(0.98);
+}

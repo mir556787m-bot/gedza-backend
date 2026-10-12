@@ -1,0 +1,95 @@
+/* frontend/src/components/PhoneSheet.css */
+
+.react-modal-sheet-container {
+  border-top-left-radius: 24px !important;
+  border-top-right-radius: 24px !important;
+  position: relative;
+}
+
+.react-modal-sheet-header {
+  background: transparent !important;
+  box-shadow: none !important;
+  min-height: 12px !important;
+  height: 12px !important;
+}
+
+.react-modal-sheet-drag-indicator {
+  background: #e2e2e4 !important;
+  opacity: 0.6 !important;
+}
+
+.phs-scroll {
+  padding: 12px 20px calc(20px + env(safe-area-inset-bottom, 0px));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  min-height: 100%;
+  touch-action: pan-y;
+}
+
+.phs-sheet {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.phs-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0;
+  padding-right: 48px;
+}
+
+.phs-hint {
+  font-size: 13px;
+  color: #999;
+  line-height: 1.4;
+  margin: 0 0 8px;
+}
+
+.phs-input {
+  padding: 16px;
+  background: #f7f7f9;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  font-size: 18px;
+  font-family: inherit;
+  outline: none;
+  color: #1a1a1a;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+
+.phs-input:focus {
+  border-color: #d40000;
+  background: #ffffff;
+}
+
+/* Кнопка «Сохранить» — на уровне «Оформить заказ» */
+.phs-submit {
+  width: 100%;
+  padding: 16px;
+  background: #d40000;
+  color: #ffffff;
+  border: none;
+  border-radius: 28px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  margin-top: 8px;
+  transition: transform 0.1s;
+}
+
+.phs-submit:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.phs-submit:disabled {
+  background: #e0e0e2;
+  color: #999;
+  cursor: not-allowed;
+}

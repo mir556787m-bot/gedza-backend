@@ -1,0 +1,124 @@
+/* frontend/src/components/DetailsSheet.css */
+
+.react-modal-sheet-container {
+  border-top-left-radius: 24px !important;
+  border-top-right-radius: 24px !important;
+  position: relative;
+}
+
+.react-modal-sheet-header {
+  background: transparent !important;
+  box-shadow: none !important;
+  min-height: 12px !important;
+  height: 12px !important;
+}
+
+.react-modal-sheet-drag-indicator {
+  background: #e2e2e4 !important;
+  opacity: 0.6 !important;
+}
+
+.ds-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  padding: 12px 20px calc(20px + env(safe-area-inset-bottom, 0px));
+}
+
+.ds-sheet {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.ds-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0;
+  padding-right: 48px;
+}
+
+.ds-back {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+}
+
+.ds-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ds-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.ds-form input,
+.ds-textarea {
+  padding: 16px;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  font-size: 15px;
+  font-family: inherit;
+  outline: none;
+  color: #1a1a1a;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.ds-form input:focus,
+.ds-textarea:focus {
+  border-color: #d40000;
+}
+
+.ds-form input:disabled {
+  background: #f7f7f9;
+  color: #999;
+}
+
+.ds-textarea {
+  resize: none;
+  min-height: 80px;
+}
+
+.ds-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+  font-size: 15px;
+  color: #1a1a1a;
+  cursor: pointer;
+}
+
+.ds-checkbox input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  accent-color: #d40000;
+  cursor: pointer;
+}
+
+/* Кнопка «Добавить» — на уровне «Оформить заказ» */
+.ds-submit {
+  width: 100%;
+  padding: 16px;
+  background: #d40000;
+  color: #ffffff;
+  border: none;
+  border-radius: 28px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: auto;
+  flex-shrink: 0;
+  font-family: inherit;
+}
+
+.ds-submit:active { transform: scale(0.98); }

@@ -1,0 +1,204 @@
+﻿/* frontend/src/components/PreorderSheet.css */
+
+.react-modal-sheet-container {
+  border-top-left-radius: 24px !important;
+  border-top-right-radius: 24px !important;
+  position: relative;
+}
+
+/* ─── Прозрачная ручка сверху ─── */
+.react-modal-sheet-header {
+  background: transparent !important;
+  box-shadow: none !important;
+  min-height: 12px !important;
+  height: 12px !important;
+}
+
+.react-modal-sheet-drag-indicator {
+  background: #e2e2e4 !important;
+  opacity: 0.6 !important;
+}
+
+.pos-scroll {
+  padding: 12px 20px calc(20px + env(safe-area-inset-bottom, 0px));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  min-height: 100%;
+  touch-action: pan-y;
+}
+
+.pos-sheet {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pos-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1a1a1a;
+  line-height: 1.25;
+  margin: 0 0 8px;
+  padding-right: 48px;
+}
+
+.pos-close-inline {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+}
+
+.pos-section-label {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-top: 8px;
+}
+
+.pos-days {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: 6px;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  min-height: 78px;
+}
+
+.pos-days::-webkit-scrollbar {
+  display: none;
+}
+
+.pos-day {
+  flex: 0 0 auto;
+  width: 68px;
+  min-width: 68px;
+  min-height: 72px;
+  padding: 10px 6px;
+  border-radius: 12px;
+  border: 2px solid #f0f0f2;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+.pos-day.active {
+  border-color: #d40000;
+  background: #fff5f5;
+}
+
+.pos-day-num {
+  font-size: 18px;
+  font-weight: 800;
+  color: #1a1a1a;
+  line-height: 1;
+}
+
+.pos-day-mon {
+  font-size: 11px;
+  color: #999;
+  text-transform: lowercase;
+  line-height: 1.1;
+}
+
+.pos-day-wd {
+  font-size: 11px;
+  color: #666;
+  font-weight: 500;
+  line-height: 1.1;
+}
+
+.pos-day.active .pos-day-num,
+.pos-day.active .pos-day-mon,
+.pos-day.active .pos-day-wd {
+  color: #d40000;
+}
+
+.pos-times {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.pos-time {
+  padding: 10px 6px;
+  border-radius: 10px;
+  border: 1.5px solid #f0f0f2;
+  background: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a1a;
+  cursor: pointer;
+  transition: all 0.15s;
+  min-height: 40px;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+.pos-time.active {
+  border-color: #d40000;
+  background: #d40000;
+  color: #ffffff;
+}
+
+.pos-time-asap {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 14px 16px;
+  font-size: 15px;
+  font-weight: 600;
+  background: #f7f7f9;
+  border: 2px solid #f0f0f2;
+  border-radius: 14px;
+  min-height: 52px;
+}
+
+.pos-time-asap.active {
+  border-color: #d40000;
+  background: #fff5f5;
+  color: #d40000;
+}
+
+.pos-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: #999;
+  font-size: 14px;
+  padding: 16px;
+}
+
+/* Кнопка «Выбрать время» — на уровне «Оформить заказ» */
+.pos-btn {
+  width: 100%;
+  padding: 16px;
+  background: #d40000;
+  color: #ffffff;
+  border: none;
+  border-radius: 28px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 8px;
+  flex-shrink: 0;
+  font-family: inherit;
+  transition: transform 0.1s;
+}
+
+.pos-btn:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.pos-btn:disabled {
+  background: #e0e0e2;
+  color: #999;
+  cursor: not-allowed;
+}

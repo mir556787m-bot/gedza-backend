@@ -1,0 +1,208 @@
+/* frontend/src/components/PromoTicket.css */
+
+/* ═══════════════════════════════════════════ */
+/*  КОНТЕЙНЕР КУПОНА                           */
+/* ═══════════════════════════════════════════ */
+
+.promo-ticket {
+  position: relative;
+  width: 280px;
+  height: 130px;
+  cursor: pointer;
+  transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  flex-shrink: 0;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  will-change: transform;
+  font-family: inherit;
+}
+
+.promo-ticket:active {
+  transform: scale(0.96);
+}
+
+/* ═══════════════════════════════════════════ */
+/*  SVG-ГРАФИКА КУПОНА                         */
+/* ═══════════════════════════════════════════ */
+
+.promo-ticket-graphics {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  overflow: visible;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.08))
+          drop-shadow(0 1px 2px rgba(0, 0, 0, 0.04));
+}
+
+.promo-ticket-base {
+  fill: #ffffff;
+  stroke: none;
+}
+
+.promo-ticket-dashed {
+  stroke: #dcdcdc;
+  stroke-dasharray: 6, 4;
+  stroke-width: 1.5;
+  fill: none;
+  transition: stroke 0.25s ease;
+}
+
+.promo-ticket.selected .promo-ticket-dashed {
+  stroke: #db1d23;
+}
+
+/* ═══════════════════════════════════════════ */
+/*  КОНТЕНТ ПОВЕРХ SVG                         */
+/* ═══════════════════════════════════════════ */
+
+.promo-ticket-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: flex-start;
+  padding: 16px 24px 16px 24px;
+  box-sizing: border-box;
+  z-index: 3;
+}
+
+/* ═══════════════════════════════════════════ */
+/*  РАДИО-КНОПКА — кольцо через box-shadow     */
+/* ═══════════════════════════════════════════ */
+
+.promo-ticket-radio {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  margin-right: 12px;
+  margin-top: 1px;
+  flex-shrink: 0;
+  background-color: #ffffff;
+  box-shadow: inset 0 0 0 2px #b5b5b5;
+  transition: box-shadow 0.2s ease;
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+.promo-ticket-radio::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  margin-top: -5px;
+  margin-left: -5px;
+  background-color: transparent;
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+.promo-ticket.selected .promo-ticket-radio {
+  box-shadow: inset 0 0 0 2px #db1d23;
+}
+
+.promo-ticket.selected .promo-ticket-radio::after {
+  background-color: #db1d23;
+}
+
+/* ═══════════════════════════════════════════ */
+/*  ТЕКСТОВАЯ ОБЛАСТЬ                          */
+/*  Заголовок сверху, тег снизу                 */
+/* ═══════════════════════════════════════════ */
+
+.promo-ticket-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-width: 0;
+  flex: 1;
+  height: 100%;
+  padding-top: 4px;
+  padding-bottom: 2px;
+}
+
+.promo-ticket-text {
+  font-size: 12px;
+  font-weight: 500;
+  color: #212121;
+  line-height: 1.3;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: -0.1px;
+  font-family: inherit;
+}
+
+.promo-ticket-tag {
+  align-self: flex-start;
+  background-color: #ededed;
+  color: #5f5f5f;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 7px 15px;
+  border-radius: 7px;
+  line-height: 1;
+  display: inline-block;
+  transition: background-color 0.2s, color 0.2s;
+  font-family: inherit;
+}
+
+.promo-ticket.selected .promo-ticket-tag {
+  background-color: #fff0f1;
+  color: #db1d23;
+}
+
+/* ═══════════════════════════════════════════ */
+/*  ОТКЛЮЧЁННЫЙ КУПОН                          */
+/* ═══════════════════════════════════════════ */
+
+.promo-ticket.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.promo-ticket:focus {
+  outline: none;
+}
+
+.promo-ticket:focus-visible {
+  outline: 2px solid #db1d23;
+  outline-offset: 2px;
+}
+
+/* ═══════════════════════════════════════════ */
+/*  АНИМАЦИЯ ПРИ ВЫБОРЕ                        */
+/* ═══════════════════════════════════════════ */
+
+.promo-ticket.selected {
+  animation: promo-selected-pulse 0.3s ease-out;
+}
+
+@keyframes promo-selected-pulse {
+  0% { transform: scale(0.96); }
+  50% { transform: scale(1.02); }
+  100% { transform: scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .promo-ticket,
+  .promo-ticket:active,
+  .promo-ticket.selected {
+    animation: none;
+    transition: none;
+  }
+  .promo-ticket:active {
+    transform: none;
+  }
+}

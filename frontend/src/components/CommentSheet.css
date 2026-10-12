@@ -1,0 +1,73 @@
+/* frontend/src/components/CommentSheet.css */
+
+.react-modal-sheet-container {
+  border-top-left-radius: 24px !important;
+  border-top-right-radius: 24px !important;
+}
+
+.cs-scroll {
+  padding: 20px 20px calc(20px + env(safe-area-inset-bottom, 0px));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  min-height: 100%;
+  touch-action: pan-y;
+}
+
+.cs-sheet {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cs-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0;
+  text-align: left;
+}
+
+.cs-textarea {
+  width: 100%;
+  padding: 14px;
+  background: #f7f7f9;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  color: #1a1a1a;
+  font-size: 15px;
+  font-family: inherit;
+  outline: none;
+  resize: none;
+  box-sizing: border-box;
+}
+
+.cs-textarea:focus {
+  border-color: #d40000;
+  background: #ffffff;
+}
+
+/* Кнопка «Сохранить» — на уровне «Оформить заказ» */
+.cs-save {
+  width: 100%;
+  padding: 16px;
+  background: #d40000;
+  color: #ffffff;
+  border: none;
+  border-radius: 28px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  transition: transform 0.1s;
+}
+
+.cs-save:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.cs-save:disabled {
+  background: #e0e0e2;
+  color: #999;
+  cursor: not-allowed;
+}

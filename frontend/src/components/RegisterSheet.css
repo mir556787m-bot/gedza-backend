@@ -1,0 +1,244 @@
+/* frontend/src/components/RegisterSheet.css */
+
+/* Закругление углов — под Mini App */
+.react-modal-sheet-container {
+  border-top-left-radius: 24px !important;
+  border-top-right-radius: 24px !important;
+}
+
+.rs-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  padding: 12px 20px calc(20px + env(safe-area-inset-bottom, 0px));
+}
+
+.rs-sheet {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.rs-title {
+  font-size: 22px;
+  font-weight: 800;
+  color: #1a1a1a;
+  margin: 8px 0 4px;
+}
+
+.rs-subtitle {
+  font-size: 14px;
+  color: #666;
+  margin: 0 0 12px;
+  line-height: 1.4;
+}
+
+.rs-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #666;
+  margin-top: 4px;
+  margin-bottom: 2px;
+}
+
+/* ─── Поля ввода ─── */
+.rs-input {
+  width: 100%;
+  padding: 14px 16px;
+  background: #f7f7f9;
+  border: 1.5px solid transparent;
+  border-radius: 12px;
+  font-size: 15px;
+  font-family: inherit;
+  color: #1a1a1a;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.rs-input:focus {
+  border-color: #d40000;
+  background: #ffffff;
+}
+
+.rs-input-with-clear {
+  padding-right: 44px;
+}
+
+.rs-input-readonly {
+  background: #f0f0f2;
+  color: #666;
+  cursor: pointer;
+}
+
+.rs-input-error {
+  border-color: #d40000;
+}
+
+.rs-hint {
+  font-size: 12px;
+  color: #d40000;
+  margin-top: -4px;
+  padding-left: 4px;
+}
+
+/* ─── Крестик внутри поля — только на устройствах с курсором ─── */
+@media (hover: hover) and (pointer: fine) {
+  .rs-clear-btn {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: none;
+    background: #d0d0d0;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    padding: 0;
+  }
+  .rs-clear-btn:active {
+    background: #b0b0b0;
+  }
+}
+
+@media (hover: none) {
+  .rs-clear-btn {
+    display: none !important;
+  }
+}
+
+/* ─── Обёртки полей ─── */
+.rs-name-wrap,
+.rs-phone-wrap,
+.rs-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* ─── Кнопка редактирования имени ─── */
+.rs-name-edit {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: #d40000;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  padding: 0;
+}
+
+.rs-name-edit:active {
+  opacity: 0.7;
+}
+
+/* ─── Кнопка «Из MAX» ─── */
+.rs-phone-btn {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 8px 14px;
+  background: #d40000;
+  color: #ffffff;
+  border: none;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.rs-phone-btn:active {
+  transform: translateY(-50%) scale(0.96);
+}
+
+.rs-phone-btn:disabled {
+  background: #e0e0e2;
+  color: #999;
+  cursor: not-allowed;
+}
+
+/* ─── Согласие ─── */
+.rs-legal {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 12px;
+  font-size: 13px;
+  color: #666;
+  line-height: 1.4;
+  cursor: pointer;
+}
+
+.rs-legal input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  accent-color: #d40000;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+/* ─── Ссылка-кнопка ─── */
+.rs-link-btn {
+  display: inline;
+  padding: 0;
+  margin: 0;
+  border: none;
+  background: transparent;
+  color: #d40000;
+  font-size: inherit;
+  font-family: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.rs-link-btn:active {
+  opacity: 0.7;
+}
+
+/* ─── Кнопка «Продолжить» ─── */
+.rs-submit {
+  width: 100%;
+  padding: 16px;
+  background: #d40000;
+  color: #ffffff;
+  border: none;
+  border-radius: 28px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 16px;
+  flex-shrink: 0;
+}
+
+.rs-submit:disabled {
+  background: #e0e0e2;
+  color: #999;
+  cursor: not-allowed;
+}
+
+.rs-submit:active:not(:disabled) {
+  transform: scale(0.98);
+}

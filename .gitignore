@@ -21,3 +21,37 @@ test_parser.py
 # OS
 .DS_Store
 Thumbs.db
+# Env
+.env
+.env.local
+.env.*
+!.env.example
+
+# Backups
+*.bak
+*.swp
+*~
+_*/
+*backup*/
+app.backup-*/
+app.bak.*/
+frontend/_backup_*/
+frontend/src.backup-*/
+
+# Logs
+*.log
+build-log.txt
+
+# Dev scripts
+check_*.py
+sniff_*.py
+debug_*.py
+debug_*.html
+
+# Misc
+f
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo

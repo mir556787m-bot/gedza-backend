@@ -1,0 +1,195 @@
+/* frontend/src/components/SupportSheet.css */
+
+.react-modal-sheet-container {
+  border-top-left-radius: 24px !important;
+  border-top-right-radius: 24px !important;
+  position: relative;
+}
+
+.react-modal-sheet-header {
+  background: transparent !important;
+  box-shadow: none !important;
+  min-height: 12px !important;
+  height: 12px !important;
+}
+
+.react-modal-sheet-drag-indicator {
+  background: #e2e2e4 !important;
+  opacity: 0.6 !important;
+}
+
+.support-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 100;
+}
+
+.support-scroll {
+  padding: 12px 20px calc(32px + env(safe-area-inset-bottom, 0px));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  min-height: 100%;
+  touch-action: pan-y;
+}
+
+.support-sheet {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.support-icon-wrap {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+
+.support-icon-bg {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: #fde8e8;
+  opacity: 0.6;
+}
+
+.support-icon {
+  position: relative;
+  z-index: 2;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: #d40000;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.support-title {
+  font-size: 26px;
+  font-weight: 800;
+  color: #1a1a1a;
+  margin: 0;
+  text-align: center;
+}
+
+.support-subtitle {
+  font-size: 15px;
+  color: #666;
+  text-align: center;
+  line-height: 1.4;
+  margin: 0 0 16px;
+  max-width: 280px;
+}
+
+.support-phone-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 18px 16px;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s, transform 0.1s;
+}
+
+.support-phone-card:active {
+  background: #f7f7f9;
+  transform: scale(0.98);
+}
+
+.support-phone-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #d40000;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.support-phone-number {
+  flex: 1;
+  text-align: left;
+  font-size: 17px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.support-phone-arrow {
+  color: #bdbdbd;
+  font-size: 22px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.support-divider {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 8px 0;
+}
+
+.support-divider::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.support-divider-text {
+  position: relative;
+  z-index: 1;
+  background: #ffffff;
+  padding: 0 12px;
+  font-size: 13px;
+  color: #999;
+}
+
+.support-socials {
+  display: flex;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.support-social-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: none;
+  background: #fde8e8;
+  color: #d40000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+}
+
+.support-social-btn:active {
+  background: #fcd4d4;
+  transform: scale(0.94);
+}
+
+.support-social-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

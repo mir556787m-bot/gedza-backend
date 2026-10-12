@@ -1,0 +1,141 @@
+/* frontend/src/components/PaymentSheet.css */
+
+.react-modal-sheet-container {
+  border-top-left-radius: 24px !important;
+  border-top-right-radius: 24px !important;
+  position: relative;
+}
+
+/* Прозрачная ручка сверху */
+.react-modal-sheet-header {
+  background: transparent !important;
+  box-shadow: none !important;
+  min-height: 12px !important;
+  height: 12px !important;
+}
+
+.react-modal-sheet-drag-indicator {
+  background: #e2e2e4 !important;
+  opacity: 0.6 !important;
+}
+
+.pms-scroll {
+  padding: 12px 20px calc(20px + env(safe-area-inset-bottom, 0px));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  min-height: 100%;
+  touch-action: pan-y;
+}
+
+.pms-sheet {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Заголовок — жирный */
+.pms-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0;
+  padding-right: 48px;
+}
+
+.pms-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pms-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 8px;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  font-family: inherit;
+}
+
+.pms-item:last-child {
+  border-bottom: none;
+}
+
+.pms-item:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.pms-radio {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid #d0d0d0;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.15s;
+}
+
+.pms-item.active .pms-radio {
+  border-color: #d40000;
+}
+
+.pms-radio-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #d40000;
+}
+
+.pms-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* Название способа — НЕ жирный */
+.pms-label {
+  font-size: 16px;
+  font-weight: 400;
+  color: #1a1a1a;
+}
+
+/* Подзаголовок — серый, мелкий */
+.pms-sub {
+  font-size: 13px;
+  color: #999;
+}
+
+/* Кнопка «Выбрать» — жирная, всегда красная */
+.pms-confirm {
+  width: 100%;
+  padding: 16px;
+  margin-top: 8px;
+  background: #d40000;
+  color: #ffffff;
+  border: none;
+  border-radius: 28px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s, transform 0.1s;
+}
+
+.pms-confirm:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.pms-confirm:disabled {
+  background: #e0e0e2;
+  color: #999;
+  cursor: not-allowed;
+}

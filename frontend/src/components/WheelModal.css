@@ -1,0 +1,169 @@
+/* frontend/src/components/WheelModal.css */
+
+.react-modal-sheet-container {
+  border-top-left-radius: 24px !important;
+  border-top-right-radius: 24px !important;
+  position: relative;
+}
+
+.react-modal-sheet-header {
+  background: transparent !important;
+  box-shadow: none !important;
+  min-height: 12px !important;
+  height: 12px !important;
+}
+
+.react-modal-sheet-drag-indicator {
+  background: #e2e2e4 !important;
+  opacity: 0.6 !important;
+}
+
+.wm-scroll {
+  padding: 12px 20px calc(20px + env(safe-area-inset-bottom, 0px));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  min-height: 100%;
+  touch-action: pan-y;
+}
+
+.wm-sheet {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.wm-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+}
+
+.wm-title {
+  font-size: 28px;
+  font-weight: 800;
+  color: #4a3a8c;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-align: center;
+  margin: 8px 0 0;
+}
+
+.wm-subtitle {
+  font-size: 15px;
+  color: #666;
+  text-align: center;
+  margin: 0 0 8px;
+}
+
+.wm-wheel-wrap {
+  position: relative;
+  width: 280px;
+  height: 280px;
+  margin: 12px 0;
+}
+
+.wm-wheel {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 0 0 0 8px #e0e2f0, 0 0 0 14px #ffffff, 0 8px 30px rgba(0, 0, 0, 0.15);
+  transform-origin: center center;
+}
+
+.wm-sector {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 50%;
+  height: 50%;
+  transform-origin: 0% 100%;
+  clip-path: polygon(0 0, 100% 0, 0 100%);
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.wm-sector-text {
+  position: absolute;
+  top: 30px;
+  left: 10px;
+  font-size: 11px;
+  font-weight: 700;
+  text-align: center;
+  width: 80px;
+  line-height: 1.2;
+  color: #1a1a1a;
+  transform: rotate(-22.5deg);
+}
+
+.wm-center-cap {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #ffffff, #e0e0e0);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  z-index: 5;
+}
+
+.wm-pointer {
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  border-top: 20px solid #4a3a8c;
+  z-index: 10;
+}
+
+.wm-prize {
+  font-size: 16px;
+  font-weight: 600;
+  color: #4a3a8c;
+  background: #f0f0ff;
+  padding: 12px 20px;
+  border-radius: 16px;
+  text-align: center;
+  margin: 4px 0;
+}
+
+.wm-prize strong {
+  color: #d40000;
+}
+
+/* Кнопка «Раскрутить» — на уровне «Оформить заказ» */
+.wm-spin-btn {
+  width: 100%;
+  max-width: 300px;
+  padding: 16px;
+  background: #d40000;
+  color: #ffffff;
+  border: none;
+  border-radius: 28px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  margin-top: 8px;
+  transition: transform 0.1s;
+}
+
+.wm-spin-btn:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.wm-spin-btn:disabled {
+  background: #e0e0e2;
+  color: #999;
+  cursor: not-allowed;
+}
