@@ -33,17 +33,14 @@ services:
     container_name: gedza-backend
     restart: unless-stopped
     ports:
-      - "8000:8000"
+      - "127.0.0.1:8000:8000"
+    env_file:
+      - .env.local
     environment:
       - REDIS_URL=redis://redis:6379/0
       - POSTGRES_URL=postgresql://gedza:${POSTGRES_PASSWORD:-gedza_secret}@postgres:5432/gedza
-      - MENU_CACHE_TTL=3600
-      - PARSE_INTERVAL_MINUTES=60
-      - GEDZA_URL=https://gedzagroup.ru/
-      - MAX_BOT_TOKEN=${MAX_BOT_TOKEN}
-      - MINI_APP_URL=${MINI_APP_URL}
-      - MAX_WEBHOOK_SECRET=${MAX_WEBHOOK_SECRET}
-      - ADMIN_SECRET=${ADMIN_SECRET}
+    volumes:
+      - ./app:/app/app
     depends_on:
       redis:
         condition: service_healthy
