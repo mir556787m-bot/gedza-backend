@@ -33,7 +33,7 @@ async def _get_updates(marker: int | None = None) -> dict:
     headers = {"Authorization": settings.MAX_BOT_TOKEN}
 
     try:
-        async with httpx.AsyncClient(timeout=40, verify=False) as client:
+        async with httpx.AsyncClient(timeout=40, verify="/app/certs/ca-bundle.pem") as client:
             r = await client.get(url, params=params, headers=headers)
 
             if r.status_code == 200:

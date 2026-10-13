@@ -45,7 +45,7 @@ async def fetch_menu_from_sellkit() -> list:
     }
 
     try:
-        async with httpx.AsyncClient(timeout=30, verify=False) as client:
+        async with httpx.AsyncClient(timeout=30, verify="/app/certs/ca-bundle.pem") as client:
             r = await client.post(
                 f"{SELLKIT_API_URL}/Content/GetCatalog.php",
                 headers=headers,

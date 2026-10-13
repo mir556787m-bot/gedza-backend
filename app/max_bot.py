@@ -19,7 +19,7 @@ async def _post(endpoint: str, payload: dict) -> dict | None:
         "Content-Type": "application/json",
     }
     try:
-        async with httpx.AsyncClient(timeout=15, verify=False) as client:
+        async with httpx.AsyncClient(timeout=15, verify="/app/certs/ca-bundle.pem") as client:
             r = await client.post(url, json=payload, headers=headers)
             if r.status_code == 200:
                 return r.json()

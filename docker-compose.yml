@@ -41,6 +41,7 @@ services:
       - POSTGRES_URL=postgresql://gedza:${POSTGRES_PASSWORD:-gedza_secret}@postgres:5432/gedza
     volumes:
       - ./app:/app/app
+      - ./certs:/app/certs:ro
     depends_on:
       redis:
         condition: service_healthy
