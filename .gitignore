@@ -55,3 +55,5 @@ f
 __pycache__/
 *.pyc
 *.pyo
+certs/
+*.pem
